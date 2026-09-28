@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f5f1">
+<title>2027考研｜每日复习计划</title>
+<style>
+:root{
+  --bg:#f7f5f1;--card:#fffdf9;--text:#272522;--muted:#77736d;
+  --line:#e7e1d8;--accent:#7b5f48;--accent2:#d9c6ad;
+  --green:#58745f;--soft:#f0e9df;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.app{min-height:100vh;background:var(--bg)}
+header{padding:28px 18px 18px;max-width:760px;margin:auto}
+.kicker{font-size:13px;color:var(--muted);letter-spacing:.08em}
+h1{font-size:28px;margin:7px 0 5px}
+.sub{color:var(--muted);font-size:14px}
+main{max-width:760px;margin:auto;padding:0 14px 40px}
+.datebar{display:flex;gap:10px;align-items:center;margin:10px 0 14px}
+.datebar button,.navbtn{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:9px 12px;color:var(--text)}
+.datebox{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.datebox strong{display:block;font-size:18px}.datebox span{color:var(--muted);font-size:12px}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.badge{font-size:12px;background:var(--soft);padding:6px 9px;border-radius:999px;color:var(--accent)}
+.progress{height:9px;background:#ece7df;border-radius:99px;overflow:hidden;margin:13px 0 7px}
+.bar{height:100%;background:var(--accent);width:0%;transition:.25s}
+.small{font-size:13px;color:var(--muted)}
+.section{margin:18px 0 9px;font-size:14px;color:var(--muted);font-weight:600}
+.task{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:8px 0}
+.task input{appearance:none;width:21px;height:21px;border:1.5px solid #bcb3a8;border-radius:7px;margin-top:1px;flex:none}
+.task input:checked{background:var(--green);border-color:var(--green);position:relative}
+.task input:checked:after{content:"✓";color:white;position:absolute;font-size:14px;left:4px;top:0px}
+.task.done .title{text-decoration:line-through;color:#999}
+.title{font-weight:600;font-size:15px}.meta{font-size:12px;color:var(--muted);margin-top:4px}
+.focus{border-left:4px solid var(--accent2)}
+.note{background:#f3eee7;border-radius:15px;padding:13px 14px;font-size:13px;line-height:1.6;color:#625b53}
+.footer{display:flex;gap:9px;margin-top:18px}
+.footer button{flex:1;padding:12px;border:1px solid var(--line);background:var(--card);border-radius:13px}
+@media(prefers-color-scheme:dark){
+:root{--bg:#181715;--card:#22211f;--text:#f2eee8;--muted:#aaa39a;--line:#38352f;--soft:#302b26;--accent2:#69533f}
+}
+
+.tabs{display:flex;gap:7px;margin:14px 0 10px;overflow:auto}
+.tab{white-space:nowrap;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:9px 12px;font-size:13px}
+.tab.active{background:var(--accent);color:white;border-color:var(--accent)}
+.panel{display:none}.panel.active{display:block}
+.timer{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center;margin:12px 0}
+.clock{font-size:46px;font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.03em}
+.timer button{border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:10px 15px;margin:4px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px}
+.stat b{font-size:22px}.stat span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.inputrow{display:flex;gap:8px;align-items:center;margin:8px 0}
+.inputrow input{width:90px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text)}
+.primary{background:var(--accent)!important;color:white!important;border-color:var(--accent)!important}
+
+/* 手机优化 */
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  button, input, textarea, select { font-size: 16px; }
+  .container, main, .app, .card { max-width: 100%; }
+  table { font-size: 13px; }
+}
+
+</style>
+
+<style>
+.quickJump{border:1px solid #e7e0d8;background:#fff;border-radius:12px;padding:11px 7px;font-weight:700;color:#4b4540}
+.quickJump:active,.quickPreset:active,#quickStart:active,#quickReset:active,#focusBtn:active{transform:scale(.97)}
+</style>
+
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#292524">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="考研打卡">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+</head>
+<body>
+<section id="quickDashboard" style="padding:16px;display:grid;gap:12px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div style="background:#fff;border:1px solid #eee7df;border-radius:16px;padding:14px;box-shadow:0 3px 14px rgba(0,0,0,.04);">
+      <div style="font-size:12px;color:#8b8178;">今日完成</div>
+      <div id="quickProgress" style="font-size:28px;font-weight:800;margin-top:4px;">0%</div>
+      <div style="height:6px;background:#eee;border-radius:99px;margin-top:8px;overflow:hidden;">
+        <div id="quickProgressBar" style="height:100%;width:0%;background:#d97706;border-radius:99px;transition:width .3s;"></div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid #eee7df;border-radius:16px;padding:14px;box-shadow:0 3px 14px rgba(0,0,0,.04);">
+      <div style="font-size:12px;color:#8b8178;">连续打卡</div>
+      <div id="quickStreak" style="font-size:28px;font-weight:800;margin-top:4px;">🔥 0 天</div>
+      <div style="font-size:12px;color:#9a9189;margin-top:6px;">坚持比完美更重要</div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#fffaf2,#fff);border:1px solid #f1e5d5;border-radius:18px;padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+      <div>
+        <div style="font-size:12px;color:#a16a32;font-weight:700;">🎯 今日优先级</div>
+        <div id="todayFocus" style="font-size:18px;font-weight:800;margin-top:4px;">307 中综：方剂 + 针灸</div>
+      </div>
+      <button id="focusBtn" type="button" style="border:0;border-radius:12px;padding:10px 12px;background:#292524;color:white;font-weight:700;">开始</button>
+    </div>
+  </div>
+
+  <div style="background:#292524;color:white;border-radius:18px;padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:12px;opacity:.7;">⏱ 学习计时</div>
+        <div id="quickTimer" style="font-size:34px;font-weight:800;letter-spacing:.04em;margin-top:3px;">25:00</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button id="quickStart" type="button" style="border:0;border-radius:12px;padding:10px 13px;font-weight:800;">开始</button>
+        <button id="quickReset" type="button" style="border:0;border-radius:12px;padding:10px 13px;font-weight:800;">重置</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:7px;margin-top:12px;">
+      <button class="quickPreset" data-min="25" type="button" style="border:0;border-radius:10px;padding:7px 11px;">25 分钟</button>
+      <button class="quickPreset" data-min="50" type="button" style="border:0;border-radius:10px;padding:7px 11px;">50 分钟</button>
+      <button class="quickPreset" data-min="90" type="button" style="border:0;border-radius:10px;padding:7px 11px;">90 分钟</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+    <button type="button" class="quickJump" data-target="english">📘 英语</button>
+    <button type="button" class="quickJump" data-target="subject">📚 307</button>
+    <button type="button" class="quickJump" data-target="politics">📝 政治</button>
+  </div>
+</section>
+
+<div id="mobileAppBar" style="position:sticky;top:0;z-index:20;padding:14px 16px;background:linear-gradient(135deg,#fff7ed,#fef3c7);border-bottom:1px solid #f1e5d5;display:flex;align-items:center;justify-content:space-between;">
+  <div>
+    <div style="font-size:12px;color:#9a6b35;font-weight:700;letter-spacing:.08em;">2027 考研 · 每日打卡</div>
+    <div style="font-size:20px;font-weight:800;margin-top:3px;">今天要做什么？</div>
+  </div>
+  <div style="font-size:28px;">📚</div>
+</div>
+<div class="app">
+<header>
+  <div class="kicker">2027考研 · 海南医科大学针灸推拿专硕</div>
+  <h1>今日复习清单</h1>
+  <div class="sub">目标：355+｜每日自动更新 · 打卡 · 计时 · 复盘</div>
+</header>
+<main>
+  <div class="datebar">
+    <button class="navbtn" onclick="moveDay(-1)">‹</button>
+    <div class="datebox"><strong id="dateText"></strong><span id="phaseText"></span></div>
+    <button class="navbtn" onclick="moveDay(1)">›</button>
+  </div>
+
+  <div class="hero">
+    <div class="row"><strong>今日完成度</strong><span class="badge" id="percent">0%</span></div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="small" id="count">0 / 0 项完成</div>
+  </div>
+
+  <div id="tasks"></div>
+
+  
+<div class="tabs">
+  <button class="tab active" onclick="showPanel('today',this)">今日</button>
+  <button class="tab" onclick="showPanel('timer',this)">学习计时</button>
+  <button class="tab" onclick="showPanel('stats',this)">我的进度</button>
+  <button class="tab" onclick="showPanel('review',this)">周复盘</button>
+</div>
+
+<div id="today" class="panel active"></div>
+
+<div id="timer" class="panel">
+  <div class="timer">
+    <div class="small">专注计时</div>
+    <div class="clock" id="clock">25:00</div>
+    <button class="primary" onclick="toggleTimer()" id="timerBtn">开始</button>
+    <button onclick="setTimer(25)">25分钟</button>
+    <button onclick="setTimer(50)">50分钟</button>
+    <button onclick="resetTimer()">重置</button>
+    <div class="small" id="timerHint">完成一次专注后，记得勾选对应任务。</div>
+  </div>
+</div>
+
+<div id="stats" class="panel">
+  <div class="stats">
+    <div class="stat"><b id="daysDone">0</b><span>有打卡记录的天数</span></div>
+    <div class="stat"><b id="totalMinutes">0</b><span>累计学习分钟</span></div>
+    <div class="stat"><b id="bestStreak">0</b><span>连续打卡天数</span></div>
+    <div class="stat"><b id="overallPct">0%</b><span>计划完成率</span></div>
+  </div>
+  <div class="section">英语阅读记录</div>
+  <div class="note">每天做完阅读后，记录“正确题数/总题数”，不要追求偶尔15/20，要看平均正确率是否稳定上升。</div>
+  <div class="inputrow">
+    <input id="engCorrect" type="number" min="0" placeholder="正确数">
+    <span>/</span>
+    <input id="engTotal" type="number" min="1" value="20">
+    <button class="primary" onclick="saveEnglish()">保存</button>
+  </div>
+  <div class="small" id="engResult"></div>
+</div>
+
+<div id="review" class="panel">
+  <div class="note">
+    每周日晚上填写一次：本周最薄弱的3个知识点、英语平均正确率、307完成情况、下周最重要的3件事。
+  </div>
+  <div class="section">本周复盘</div>
+  <textarea id="reviewText" style="width:100%;min-height:180px;border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--card);color:var(--text);font:inherit" placeholder="1. 本周完成：&#10;2. 最大问题：&#10;3. 下周重点："></textarea>
+  <button class="primary" style="width:100%;margin-top:9px;padding:12px;border-radius:13px" onclick="saveReview()">保存本周复盘</button>
+</div>
+<div class="note" id="note"></div>
+  <div class="footer">
+    <button onclick="goToday()">回到今天</button>
+    <button onclick="resetDay()">清空今天勾选</button>
+  </div>
+</main>
+</div>
+<script>
+const START="2026-09-28";
+const END="2026-12-20";
+const weekdays=["日","一","二","三","四","五","六"];
+let viewDate=new Date();
+viewDate.setHours(0,0,0,0);
+
+function key(d){return "study_"+fmt(d)}
+function fmt(d){return d.toISOString().slice(0,10)}
+function parse(s){let [y,m,day]=s.split("-").map(Number);return new Date(y,m-1,day)}
+function daysBetween(a,b){return Math.round((b-a)/86400000)}
+function phase(d){
+  const n=daysBetween(parse(START),d);
+  if(n<0) return "计划尚未开始";
+  if(n<=2) return "启动｜方剂＋针灸";
+  if(n<=5) return "低负担｜朋友来访";
+  if(n<=33) return "10月｜攻克方剂＋针灸";
+  if(n<=63) return "11月｜二轮＋真题＋提分";
+  return "12月｜冲刺＋套卷";
+}
+function tasksFor(d){
+  const n=daysBetween(parse(START),d);
+  if(n<0 || n>83) return [{s:"计划外",t:"这一天暂未设置任务",m:"可用左右箭头查看计划"}];
+  if(n>=3 && n<=5) return [
+    {s:"英语",t:"英语单词 30–45 分钟",m:"最低任务"},
+    {s:"307中综",t:"方剂背诵 20–30 分钟（有空再做）",m:"可选"},
+    {s:"307中综",t:"针灸穴位/经络背诵 20–30 分钟（有空再做）",m:"可选"}
+  ];
+  if(n<=2) return [
+    {s:"307中综",t:"方剂学习 2 小时",m:"主攻｜理解＋组成＋功效＋主治"},
+    {s:"英语",t:"真题阅读 1 篇",m:"精读＋逐题复盘"},
+    {s:"英语",t:"英语单词 30 分钟",m:""},
+    {s:"307中综",t:"针灸学习 2 小时",m:"经络/腧穴/刺灸法/治疗"},
+    {s:"307中综",t:"中基/中诊/中药/中内二轮 1 小时",m:"四门轮换"},
+    {s:"307中综",t:"方剂＋针灸练习题 1 小时",m:"合书回忆，不只看答案"},
+    {s:"307中综",t:"睡前回忆今日知识点 20 分钟",m:""}
+  ];
+  if(n<=33){
+    const rot=["中基","中诊","中药","中内"][n%4];
+    return [
+      {s:"307中综",t:"方剂 2 小时",m:n<23?"第一轮｜理解＋背诵":"第一轮收尾/二轮重点"},
+      {s:"英语",t:n<14?"真题阅读 1 篇＋精读":"真题阅读 2 篇＋精读",m:"重点分析错题依据"},
+      {s:"英语",t:"英语单词 30–40 分钟",m:""},
+      {s:"307中综",t:"针灸 2 小时",m:n<23?"第一轮":"第一轮收尾＋二轮穴位"},
+      {s:"307中综",t:`${rot} 二轮 1 小时`,m:"四门轮换"},
+      {s:"307中综",t:"307刷题＋错题 1 小时",m:"当天知识必须回忆"},
+      {s:"政治",t:n<17?"政治入门 45–60 分钟":"政治基础课＋选择题 60 分钟",m:"10月中下旬正式启动"}
+    ];
+  }
+  if(n<=63){
+    const rot=["中基","中诊","中药","中内","针灸","方剂"][n%6];
+    return [
+      {s:"307中综",t:"知识点二轮 2 小时",m:`重点：${rot}`},
+      {s:"307中综",t:"307真题/题库 2 小时",m:"错题必须回看"},
+      {s:"307中综",t:"高频背诵 1 小时",m:"方剂＋针灸＋中药重点"},
+      {s:"英语",t:"真题阅读 2 篇",m:"稳定正确率优先"},
+      {s:"英语",t:"单词＋长难句 40 分钟",m:""},
+      {s:"政治",t:"政治 60–90 分钟",m:"课程＋选择题"},
+      {s:"复盘",t:"记录今天3个最薄弱知识点",m:"为周末查漏补缺"}
+    ];
+  }
+  const rot=["方剂","针灸","中内","中药","中基","中诊"][n%6];
+  return [
+    {s:"307中综",t:"高频知识背诵 2 小时",m:`今日重点：${rot}`},
+    {s:"307中综",t:"套卷/真题 2 小时",m:"严格计时"},
+    {s:"307中综",t:"错题＋易混点 1 小时",m:""},
+    {s:"英语",t:"真题阅读＋作文 2 小时",m:""},
+    {s:"英语",t:"单词 30 分钟",m:""},
+    {s:"政治",t:"选择题＋冲刺背诵 2 小时",m:""},
+  ];
+}
+function loadChecks(){
+  try{return JSON.parse(localStorage.getItem(key(viewDate))||"[]")}catch(e){return []}
+}
+function saveChecks(a){localStorage.setItem(key(viewDate),JSON.stringify(a))}
+function render(){
+  document.getElementById("dateText").textContent=`${viewDate.getMonth()+1}月${viewDate.getDate()}日 · 星期${weekdays[viewDate.getDay()]}`;
+  document.getElementById("phaseText").textContent=phase(viewDate);
+  const ts=tasksFor(viewDate), checks=loadChecks();
+  const box=document.getElementById("tasks"); box.innerHTML="";
+  let last="";
+  ts.forEach((x,i)=>{
+    if(x.s!==last){let h=document.createElement("div");h.className="section";h.textContent=x.s;box.appendChild(h);last=x.s}
+    const el=document.createElement("label");el.className="task"+(checks[i]?" done":"");
+    el.innerHTML=`<input type="checkbox" ${checks[i]?"checked":""}><div><div class="title">${x.t}</div><div class="meta">${x.m||""}</div></div>`;
+    el.querySelector("input").addEventListener("change",e=>{
+      checks[i]=e.target.checked;saveChecks(checks);render();
+    });
+    box.appendChild(el);
+  });
+  const done=checks.filter(Boolean).length, total=ts.length, p=total?Math.round(done/total*100):0;
+  document.getElementById("percent").textContent=p+"%";
+  document.getElementById("bar").style.width=p+"%";
+  document.getElementById("count").textContent=`${done} / ${total} 项完成`;
+  loadEnglish(); updateStats(); document.getElementById("note").textContent =
+    daysBetween(parse(START),viewDate)>=3 && daysBetween(parse(START),viewDate)<=5
+    ? "❤️ 10月1–3日是低负担模式。朋友来玩就安心玩，单词完成即可，不补课、不焦虑。"
+    : "今天最重要：先完成带有“主攻”或“重点”的任务。全部完成后再加量，不建议熬夜补进度。";
+}
+function moveDay(n){viewDate.setDate(viewDate.getDate()+n);render()}
+function goToday(){let d=new Date();d.setHours(0,0,0,0);viewDate=d;render()}
+function resetDay(){localStorage.removeItem(key(viewDate));render()}
+
+let timerSec=1500,timerInt=null;
+function setTimer(min){clearInterval(timerInt);timerInt=null;timerSec=min*60;document.getElementById("timerBtn").textContent="开始";drawTimer()}
+function drawTimer(){let m=Math.floor(timerSec/60),s=timerSec%60;document.getElementById("clock").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function toggleTimer(){
+  if(timerInt){clearInterval(timerInt);timerInt=null;document.getElementById("timerBtn").textContent="继续";return}
+  document.getElementById("timerBtn").textContent="暂停";
+  timerInt=setInterval(()=>{
+    timerSec--; drawTimer();
+    if(timerSec<=0){clearInterval(timerInt);timerInt=null;document.getElementById("timerBtn").textContent="完成！";addMinutes(25);alert("本次专注完成啦！🌷")}
+  },1000)
+}
+function resetTimer(){setTimer(25)}
+function addMinutes(n){
+  let d=localStorage.getItem("minutes_"+fmt(viewDate)); localStorage.setItem("minutes_"+fmt(viewDate),String((+d||0)+n));updateStats()
+}
+function showPanel(id,btn){
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.getElementById(id).classList.add("active");btn.classList.add("active");
+  if(id==="stats")updateStats();
+  if(id==="review")loadReview();
+}
+function saveEnglish(){
+  let c=+document.getElementById("engCorrect").value,t=+document.getElementById("engTotal").value;
+  if(t>0){localStorage.setItem("eng_"+fmt(viewDate),JSON.stringify({c,t}));document.getElementById("engResult").textContent=`已记录：${c}/${t}，正确率 ${(c/t*100).toFixed(0)}%`; }
+}
+function loadEnglish(){
+  let x=JSON.parse(localStorage.getItem("eng_"+fmt(viewDate))||"null");
+  if(x){document.getElementById("engCorrect").value=x.c;document.getElementById("engTotal").value=x.t;document.getElementById("engResult").textContent=`已记录：${x.c}/${x.t}，正确率 ${(x.c/x.t*100).toFixed(0)}%`}
+  else{document.getElementById("engCorrect").value="";document.getElementById("engTotal").value=20;document.getElementById("engResult").textContent=""}
+}
+function updateStats(){
+  let d=parse(START), end=new Date(); end.setHours(0,0,0,0);
+  let days=0,mins=0,done=0,total=0,streak=0,best=0;
+  for(let x=new Date(d);x<=end;x.setDate(x.getDate()+1)){
+    let a=JSON.parse(localStorage.getItem("study_"+fmt(x))||"[]");
+    if(a.some(Boolean))days++;
+    mins+=(+localStorage.getItem("minutes_"+fmt(x))||0);
+    total+=a.length;done+=a.filter(Boolean).length;
+    if(a.some(Boolean)){streak++;best=Math.max(best,streak)}else streak=0;
+  }
+  document.getElementById("daysDone").textContent=days;
+  document.getElementById("totalMinutes").textContent=mins;
+  document.getElementById("bestStreak").textContent=best;
+  document.getElementById("overallPct").textContent=(total?Math.round(done/total*100):0)+"%";
+  loadEnglish();
+}
+function saveReview(){localStorage.setItem("review_"+fmt(viewDate),document.getElementById("reviewText").value);alert("本周复盘已保存 🌷")}
+function loadReview(){document.getElementById("reviewText").value=localStorage.getItem("review_"+fmt(viewDate))||""}
+
+goToday();
+</script>
+<div id="mobileHint" style="position:sticky;bottom:0;z-index:19;margin-top:18px;padding:10px 14px;background:rgba(255,255,255,.94);border-top:1px solid #eee7df;text-align:center;font-size:12px;color:#8b8178;">
+  📱 手机使用建议：用 Safari 打开网页后，点「分享」→「添加到主屏幕」
+</div>
+
+<script>
+(function(){
+  const timerEl = document.getElementById('quickTimer');
+  const startBtn = document.getElementById('quickStart');
+  const resetBtn = document.getElementById('quickReset');
+  const progressEl = document.getElementById('quickProgress');
+  const progressBar = document.getElementById('quickProgressBar');
+  const streakEl = document.getElementById('quickStreak');
+  const focusBtn = document.getElementById('focusBtn');
+  let seconds = 25 * 60, timer = null, running = false;
+
+  function paintTimer(){
+    const m = Math.floor(seconds/60).toString().padStart(2,'0');
+    const s = (seconds%60).toString().padStart(2,'0');
+    if(timerEl) timerEl.textContent = m + ':' + s;
+  }
+  function setTimer(min){
+    clearInterval(timer); running=false; seconds=min*60; paintTimer();
+    if(startBtn) startBtn.textContent='开始';
+  }
+  function toggleTimer(){
+    if(running){
+      clearInterval(timer); running=false;
+      if(startBtn) startBtn.textContent='继续';
+    } else {
+      running=true;
+      if(startBtn) startBtn.textContent='暂停';
+      timer=setInterval(function(){
+        seconds--;
+        paintTimer();
+        if(seconds<=0){
+          clearInterval(timer); running=false; seconds=0; paintTimer();
+          if(startBtn) startBtn.textContent='开始';
+          try{navigator.vibrate && navigator.vibrate([150,80,150]);}catch(e){}
+          alert('🎉 这一轮学习完成！休息 5–10 分钟，再开始下一轮。');
+        }
+      },1000);
+    }
+  }
+  startBtn && startBtn.addEventListener('click',toggleTimer);
+  resetBtn && resetBtn.addEventListener('click',()=>setTimer(25));
+  document.querySelectorAll('.quickPreset').forEach(b=>b.addEventListener('click',()=>setTimer(+b.dataset.min)));
+  focusBtn && focusBtn.addEventListener('click',()=>{
+    const candidates = [...document.querySelectorAll('input[type="checkbox"]')];
+    const first = candidates.find(x=>!x.checked);
+    if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); first.focus(); }
+    else window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+  });
+
+  function updateProgress(){
+    const boxes=[...document.querySelectorAll('input[type="checkbox"]')];
+    if(!boxes.length) return;
+    const done=boxes.filter(x=>x.checked).length;
+    const pct=Math.round(done/boxes.length*100);
+    if(progressEl) progressEl.textContent=pct+'%';
+    if(progressBar) progressBar.style.width=pct+'%';
+  }
+  document.addEventListener('change',e=>{
+    if(e.target.matches('input[type="checkbox"]')) updateProgress();
+  });
+  updateProgress();
+
+  document.querySelectorAll('.quickJump').forEach(b=>b.addEventListener('click',()=>{
+    const text=b.dataset.target;
+    const all=[...document.querySelectorAll('h1,h2,h3,h4,section,div,p')];
+    const found=all.find(x=>(x.textContent||'').includes(text==='english'?'英语':text==='subject'?'307':'政治'));
+    if(found) found.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+
+  // Persist a lightweight streak counter based on whether any task is checked today.
+  const key='kaoyan_streak_v2', today=new Date().toISOString().slice(0,10);
+  let state={last:'',streak:0};
+  try{state=JSON.parse(localStorage.getItem(key))||state;}catch(e){}
+  function saveStreak(){
+    const boxes=[...document.querySelectorAll('input[type="checkbox"]')];
+    if(boxes.some(x=>x.checked)){
+      if(state.last!==today){
+        const prev=new Date(state.last), now=new Date(today);
+        const diff=state.last ? Math.round((now-prev)/86400000) : 999;
+        state.streak=(diff===1?state.streak+1:1); state.last=today;
+        localStorage.setItem(key,JSON.stringify(state));
+      }
+      if(streakEl) streakEl.textContent='🔥 '+state.streak+' 天';
+    }
+  }
+  document.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"]')) saveStreak();});
+  if(state.last===today && streakEl) streakEl.textContent='🔥 '+state.streak+' 天';
+})();
+</script>
+
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+</script>
+
+
+<div id="installPwaBox" style="display:none;position:fixed;left:14px;right:14px;bottom:72px;z-index:50;background:#292524;color:white;border-radius:18px;padding:14px 16px;box-shadow:0 12px 30px rgba(0,0,0,.25);">
+  <div style="font-weight:800;">📱 把考研打卡安装到手机</div>
+  <div style="font-size:12px;opacity:.75;margin-top:4px;">安装后可以像 App 一样从主屏幕打开。</div>
+  <button id="installPwaBtn" type="button" style="margin-top:10px;border:0;border-radius:10px;padding:9px 14px;font-weight:800;">安装到主屏幕</button>
+  <button id="closePwaBtn" type="button" style="margin-left:6px;border:0;border-radius:10px;padding:9px 14px;">稍后</button>
+</div>
+<script>
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const box=document.getElementById('installPwaBox');
+  if(box && !localStorage.getItem('pwaInstallDismissed')) box.style.display='block';
+});
+document.getElementById('installPwaBtn')?.addEventListener('click', async () => {
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  try { await deferredInstallPrompt.userChoice; } catch(e) {}
+  deferredInstallPrompt=null;
+  document.getElementById('installPwaBox').style.display='none';
+});
+document.getElementById('closePwaBtn')?.addEventListener('click', () => {
+  document.getElementById('installPwaBox').style.display='none';
+  localStorage.setItem('pwaInstallDismissed','1');
+});
+</script>
+
+</body>
+</html>
